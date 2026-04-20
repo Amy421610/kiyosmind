@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiyo's Mind ✨ Dual Soul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #fff5f7; --card: #ffffff; --text: #1a1a1a; --accent: #ff8fa3; --border: #e0aeb9; --btn-radius: 20px; }
+        [data-theme="dark"] { --bg: #000000; --card: #121212; --text: #e0e0e0; --accent: #8b0000; --border: #440000; --btn-radius: 5px; }
+
+        body { margin: 0; font-family: 'Inter', 'Noto Serif JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: 0.5s; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 500px; padding: 20px; margin: auto; box-sizing: border-box; }
+        .glass { background: var(--card); border: 2px solid var(--border); border-radius: var(--btn-radius); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .screen { display: none; animation: fadeIn 0.3s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .chip-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px; margin: 10px 0 20px 0; }
+        .chip { padding: 12px 5px; border-radius: var(--btn-radius); background: rgba(0,0,0,0.05); text-align: center; cursor: pointer; font-weight: bold; border: 2px solid var(--border); font-size: 0.75rem; color: var(--text); }
+        .chip.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .btn-main { background: var(--text); color: var(--bg); border: 2px solid var(--text); padding: 18px; border-radius: var(--btn-radius); width: 100%; font-weight: 800; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        [data-theme="dark"] .btn-main { background: #ccac00; color: black; border-color: #ccac00; }
+
+        .option-btn { background: var(--card); border: 2px solid var(--border); padding: 16px; border-radius: var(--btn-radius); width: 100%; margin-bottom: 10px; cursor: pointer; color: var(--text); font-weight: 600; font-size: 1.1rem; }
+        
+        #pause-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 7000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        #reward-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        #reward-img { width: 80%; max-width: 300px; border-radius: 15px; border: 3px solid var(--accent); }
+
+        .table-wrapper { width: 100%; overflow-x: auto; border-radius: 15px; border: 2px solid var(--border); margin-top: 15px; max-height: 60vh; }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        .grammar-mode table { min-width: 100%; }
+        th { background: var(--accent); color: white; padding: 12px; font-size: 0.7rem; position: sticky; top: 0; z-index: 10; }
+        td { padding: 12px; border-bottom: 1px solid var(--border); text-align: center; background: var(--card); font-size: 0.8rem; }
+
+        .nav-controls { display: flex; gap: 15px; }
+        .control-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .control-item small { font-size: 0.6rem; font-weight: 900; }
+    </style>
+</head>
+<body data-theme="light">
+
+<audio id="bgm-light" loop src="https://files.catbox.moe/g6p5mx.mp3"></audio>
+<audio id="bgm-dark" loop src="https://files.catbox.moe/2ti16m.mp3"></audio>
+<audio id="sfx-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+<audio id="sfx-error" src="https://files.catbox.moe/mk59ob.mp3" preload="auto"></audio>
+
+<div id="pause-screen">
+    <div class="glass" style="padding: 30px; width: 250px;">
+        <h2 style="margin-top:0;">一時停止</h2>
+        <button class="btn-main" onclick="togglePause(false)">再開</button>
+        <button class="btn-main" style="background:none; color:var(--text); border: none;" onclick="togglePause(false); navTo('home-screen')">終了</button>
+    </div>
+</div>
+
+<div id="reward-popup">
+    <img id="reward-img" src="">
+    <div class="glass" style="margin-top: 20px; padding: 15px 30px;">
+        <span id="feedback-msg" style="font-weight: 900; font-size: 1.2rem;"></span>
+    </div>
+</div>
+
+<div class="app-container">
+    <div class="glass" style="display: flex; justify-content: space-between; margin-bottom: 20px; padding: 12px 20px; align-items: center;">
+        <div class="nav-controls">
+            <div class="control-item" onclick="toggleAmbience()"><span>🎵</span><small id="status-music">OFF</small></div>
+            <div class="control-item" onclick="toggleSfx()"><span>🔊</span><small id="status-sfx">ON</small></div>
+        </div>
+        <span onclick="navTo('home-screen')" style="font-weight:900; font-size: 0.7rem; letter-spacing: 2px; cursor:pointer; padding: 5px;">KIYO'S MIND</span>
+        <span onclick="toggleTheme()" style="cursor:pointer; font-size: 1.2rem;">🌓</span>
+    </div>
+
+    <div id="home-screen" class="screen active">
+        <h1 style="text-align:center;">おかえり ✨</h1>
+        <div id="records-box" class="glass" style="padding: 12px; margin-bottom: 15px; font-size: 0.8rem;">
+            <div style="font-weight: 900; color: var(--accent);">🏆 自己ベスト:</div>
+            <div id="best-time">記録なし</div>
+        </div>
+        <p style="font-weight:900; font-size: 0.65rem;">レベル:</p>
+        <div class="chip-group" id="level-selector">
+            <div class="chip selected" onclick="setLevel('N4', this)">N4</div>
+            <div class="chip" onclick="setLevel('N3', this)">N3</div>
+            <div class="chip" onclick="setLevel('N2', this)">N2</div>
+            <div class="chip" onclick="setLevel('N1', this)">N1</div>
+        </div>
+        <p style="font-weight:900; font-size: 0.65rem;">カテゴリー:</p>
+        <div class="chip-group">
+            <div class="chip selected" id="cat-v" onclick="setCategory('V')">動詞 (Verbos)</div>
+            <div class="chip" id="cat-g" onclick="setCategory('G')">文法 (Gramática)</div>
+        </div>
+        <button class="btn-main" onclick="navTo('setup-screen')">スタート</button>
+        <button class="btn-main" style="background:none; color:var(--accent); border-color: var(--accent);" onclick="navTo('lib-screen')">ライブラリ</button>
+    </div>
+
+    <div id="setup-screen" class="screen">
+        <h3>設定</h3>
+        <p style="font-weight:900; font-size: 0.7rem;">モード:</p>
+        <div class="chip-group">
+            <div class="chip selected" id="m-complete" onclick="setMode('complete')">全問 (Todo)</div>
+            <div class="chip" id="m-speed" onclick="setMode('speed')">タイムアタック</div>
+        </div>
+        <div id="speed-options" style="display:none;">
+            <p style="font-weight:900; font-size: 0.7rem;">問題数:</p>
+            <div class="chip-group">
+                <div class="chip selected" onclick="setQty(20, this)">20</div>
+                <div class="chip" onclick="setQty(50, this)">50</div>
+                <div class="chip" onclick="setQty(100, this)">100</div>
+                <div class="chip" onclick="setQty(200, this)">200</div>
+            </div>
+        </div>
+        <button class="btn-main" onclick="startSession()">はじめる</button>
+    </div>
+
+    <div id="game-screen" class="screen">
+        <div class="glass" style="padding:40px 20px; text-align:center; position:relative; margin-bottom:20px;">
+            <div id="timer-display" style="position:absolute; top:12px; left:18px; font-weight:900; color:var(--accent); display:none;">0s</div>
+            <div id="counter-display" style="position:absolute; top:12px; right:60px; font-weight:900; color:var(--text); font-size:0.85rem; opacity: 0.8;">0 / 0</div>
+            <div style="position:absolute; top:12px; right:15px;">
+                <button onclick="togglePause(true)" style="background:none; border:none; cursor:pointer; font-size:1.2rem; font-weight:bold; color: var(--text);">✕</button>
+            </div>
+            <p id="q-m" style="font-weight:bold; color:var(--accent); margin-bottom: 5px;"></p>
+            <ruby id="q-kanji" style="font-size:2.5rem; font-weight:900;">---<rt></rt></ruby>
+            <div id="q-tag" style="display:block; margin-top:15px; font-weight:900; background:var(--text); color:var(--bg); padding:5px; border-radius:10px; font-size:0.8rem;"></div>
+        </div>
+        <div id="options-area"></div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="glass" style="padding:40px 20px; text-align:center;">
+            <h2 style="color:var(--accent);">終了！</h2>
+            <div id="final-score" style="font-size: 1.5rem; font-weight:900; margin: 20px 0;">0 / 0</div>
+            <div id="final-time-label" style="font-weight:bold; margin-bottom: 20px; display:none;">タイム: <span id="res-time">0s</span></div>
+            <button class="btn-main" onclick="navTo('home-screen')">ホームに戻る</button>
+        </div>
+    </div>
+
+    <div id="lib-screen" class="screen">
+        <h3 id="lib-title">ライブラリ</h3>
+        <div class="chip-group" style="margin-bottom: 15px;">
+            <div class="chip selected" id="lib-cat-v" onclick="switchLib('V')">Verbos</div>
+            <div class="chip" id="lib-cat-g" onclick="switchLib('G')">Gramática</div>
+        </div>
+        <div id="lib-wrapper" class="table-wrapper glass"><table id="lib-body"></table></div>
+    </div>
+</div>
+
+<script>
+    const imgSakura = ["https://i.postimg.cc/tTrpL78H/Deku.jpg", "https://i.postimg.cc/63HtDTFJ/Jaemin.jpg", "https://i.postimg.cc/MHvqxqJN/Jungwon.jpg", "https://i.postimg.cc/QCHhshrZ/Miles-Morales.jpg", "https://i.postimg.cc/Y0hMkMwM/Tanjiro.jpg"];
+    const imgGothic = ["https://i.postimg.cc/C1vSWdXW/Ayanokoji.jpg", "https://i.postimg.cc/76Bwpbjw/Deku-dark.jpg", "https://i.postimg.cc/zBd89345/Jinwoo.jpg", "https://i.postimg.cc/gjnmdmPF/Kaneki.jpg"];
+    const imgError = "https://i.postimg.cc/dVNJC99P/Jaemin-no.jpg";
+
+    let session = { mode: 'complete', qty: 20, queue: [], timerInterval: null, correctCount: 0, totalAnswered: 0, limit: 0, isPaused: false, seconds: 0 };
+    let currentCategory = 'V', currentLevel = 'N4', sfxOn = true, ambienceOn = false;
+
+    const verbData = [
+        {k:"飲む", f:"のむ", m:"Beber", g:1, lv:"N4"}, {k:"話す", f:"はなす", m:"Hablar", g:1, lv:"N4"},
+        {k:"食べる", f:"たべる", m:"Comer", g:2, lv:"N4"}, {k:"見る", f:"みる", m:"Ver", g:2, lv:"N4"},
+        {k:"行く", f:"いく", m:"Ir", g:1, lv:"N4"}, {k:"書く", f:"かく", m:"Escribir", g:1, lv:"N4"},
+        {k:"寝る", f:"ねる", m:"Dormir", g:2, lv:"N4"}, {k:"待つ", f:"まつ", m:"Esperar", g:1, lv:"N4"},
+        {k:"買う", f:"かう", m:"Comprar", g:1, lv:"N4"}, {k:"来る", f:"くる", m:"Venir", g:3, lv:"N4"},
+        {k:"する", f:"する", m:"Hacer", g:3, lv:"N4"}
+    ];
+
+    const grammarData = [
+        {f:"nai_stem", tag:"〜なければなりません", m:"Tengo que", lv:"N4", formula:"V-nai + ければなりません"},
+        {f:"te", tag:"〜ています", m:"Estar haciendo", lv:"N4", formula:"V-te + います"},
+        {f:"dic", tag:"〜ことができます", m:"Poder hacer", lv:"N4", formula:"V-dic + ことができます"},
+        {f:"ta", tag:"〜ことがあります", m:"Haber hecho", lv:"N4", formula:"V-ta + ことがあります"},
+        {f:"te", tag:"〜ください", m:"Por favor", lv:"N4", formula:"V-te + ください"}
+    ];
+
+    function getForm(v, type) {
+        const s = v.f.slice(0,-1); const l = v.f.slice(-1);
+        const mapNai = {る:"ら",む:"ま",ぶ:"ば",ぬ:"な",つ:"た",す:"さ",ぐ:"が",く:"か",う:"わ"};
+        const mapTe = {る:"って",む:"んで",ぶ:"んで",ぬ:"んで",つ:"って",す:"して",ぐ:"いで",く:"いて",う:"って"};
+        const mapPot = {る:"れ",む:"め",ぶ:"べ",ぬ:"ね",つ:"て",す:"せ",ぐ:"げ",く:"け",う:"え"};
+       const mapPas = {る:"ら",む:"ま",ぶ:"ば",ぬ:"な",つ:"た",す:"さ",ぐ:"が",く:"か",う:"わ"};
+        const mapVol = {る:"よう",む:"もう",ぶ:"ぼう",ぬ:"のう",つ:"とう",す:"そう",ぐ:"ごう",く:"こう",う:"おう"};
+        const mapMasu = {る:"り",む:"み",ぶ:"び",ぬ:"に",つ:"ち",す:"し",ぐ:"ぎ",く:"き",う:"い"};
+
+        if(v.g === 3) {
+            if(v.f === "くる") {
+                if(type === 'nai_stem') return "こ"; if(type === 'te') return "きて";
+                if(type === 'masu') return "き"; if(type === 'ta') return "きた";
+                if(type === 'Pasiva' || type === 'Potencial') return "こられ";
+                if(type === 'Causativa') return "こさせ"; if(type === 'Volitivo') return "こよう";
+            } else {
+                if(type === 'nai_stem') return "し"; if(type === 'te') return "して";
+                if(type === 'masu') return "し"; if(type === 'ta') return "した";
+                if(type === 'Pasiva') return "され"; if(type === 'Potencial') return "でき";
+                if(type === 'Causativa') return "させ"; if(type === 'Volitivo') return "しよう";
+            }
+        }
+        if(v.g === 2) {
+            if(type === 'nai_stem') return s; if(type === 'te') return s + "て";
+            if(type === 'ta') return s + "た"; if(type === 'masu') return s;
+            if(type === 'Pasiva' || type === 'Potencial') return s + "られ";
+            if(type === 'Causativa') return s + "させ"; if(type === 'Volitivo') return s + "よう";
+        }
+        if(type === 'nai_stem') return s + mapNai[l];
+        if(type === 'masu') return s + mapMasu[l];
+        if(type === 'te') return (v.f === "いく") ? "いって" : s + mapTe[l];
+        if(type === 'ta') return (v.f === "いく") ? "いった" : (s + mapTe[l]).replace('て','た').replace('de','da').replace('んで','んだ').replace('いで','いだ').replace('いて','いた').replace('って','った').replace('して','した');
+        if(type === 'Potencial') return s + mapPot[l] + "る";
+        if(type === 'Pasiva') return s + mapPas[l] + "れ";
+        if(type === 'Causativa') return s + mapPas[l] + "せ";
+        if(type === 'Volitivo') return s + mapVol[l];
+        return v.f;
+    }
+
+    function navTo(id) {
+    if (id !== 'game-screen' && session.timerInterval) {
+        clearInterval(session.timerInterval);
+        session.timerInterval = null;
+    }
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id === 'lib-screen') renderLib();
+    if(id === 'home-screen') loadRecords();
+}
+
+    function togglePause(show) {
+        session.isPaused = show;
+        document.getElementById('pause-screen').style.display = show ? 'flex' : 'none';
+    }
+
+    function startSession() {
+    clearInterval(session.timerInterval); // Limpiar cualquier intervalo previo
+    session.timerInterval = null;
+    session.isPaused = false;
+    let base = [];
+        const vFilter = verbData.filter(v => v.lv === currentLevel);
+        const gFilter = grammarData.filter(g => g.lv === currentLevel);
+        if(currentCategory === 'V') {
+            vFilter.forEach(v => { ['te','nai_stem','ta','masu','Volitivo','Pasiva','Potencial'].forEach(t => base.push({v, type:'V', t})); });
+        } else {
+            vFilter.forEach(v => gFilter.forEach(g => base.push({v, g, type:'G'})));
+        }
+        
+        session.limit = (session.mode === 'complete') ? base.length : Math.min(session.qty, base.length);
+        session.correctCount = 0; 
+        session.totalAnswered = 0; 
+        session.seconds = 0; // Reiniciar segundos
+        session.queue = base.sort(() => Math.random() - 0.5).slice(0, session.limit);
+        
+        if(session.mode === 'speed') {
+            document.getElementById('timer-display').style.display = 'block';
+            document.getElementById('timer-display').innerText = "0s";
+            session.timerInterval = setInterval(() => {
+                if(!session.isPaused) { 
+                    session.seconds++; 
+                    document.getElementById('timer-display').innerText = session.seconds + "s"; 
+                }
+            }, 1000);
+        } else {F
+            document.getElementById('timer-display').style.display = 'none';
+        }
+        navTo('game-screen'); nextQ();
+    }
+
+    function nextQ() {
+        if(session.totalAnswered >= session.limit) { endSession(); return; }
+        document.getElementById('counter-display').innerText = `${session.totalAnswered + 1} / ${session.limit}`;
+        const item = session.queue[0];
+        const area = document.getElementById('options-area'); area.innerHTML = "";
+        let correct = (item.type === 'V') ? getForm(item.v, item.t) : getForm(item.v, item.g.f);
+
+        document.getElementById('q-kanji').innerHTML = item.type === 'V' ? `${item.v.k}<rt>${item.v.f}</rt>` : item.g.tag;
+        document.getElementById('q-m').innerText = item.type === 'V' ? item.v.m : `${item.v.k} + ${item.g.m}`;
+        document.getElementById('q-tag').innerText = item.type === 'V' ? item.t : "正しい形";
+
+        const pool = [getForm(item.v, 'te'), getForm(item.v, 'nai_stem'), getForm(item.v, 'ta'), getForm(item.v, 'masu'), getForm(item.v, 'Volitivo'), getForm(item.v, 'Potencial')];
+        const finalOpts = [...new Set([correct, ...pool.sort(()=>.5-Math.random())])].slice(0,4).sort(()=>.5-Math.random());
+
+        finalOpts.forEach(o => {
+            const b = document.createElement('button');
+            b.className = "option-btn glass"; b.innerText = o;
+            b.onclick = () => {
+                session.totalAnswered++;
+                if(o === correct) { session.correctCount++; showFeedback(true); session.queue.shift(); setTimeout(nextQ, 1500); }
+                else { showFeedback(false, correct); session.queue.push(session.queue.shift()); setTimeout(nextQ, 2500); }
+            };
+            area.appendChild(b);
+        });
+    }
+
+    function endSession() {
+        clearInterval(session.timerInterval);
+        navTo('result-screen');
+        document.getElementById('final-score').innerText = `${session.correctCount} / ${session.limit}`;
+        if(session.mode === 'speed') {
+            document.getElementById('final-time-label').style.display = 'block';
+            document.getElementById('res-time').innerText = session.seconds + "s";
+            saveRecord(session.limit, session.seconds);
+        } else {
+            document.getElementById('final-time-label').style.display = 'none';
+        }
+    }
+
+    function showFeedback(isCorrect, correctVal) {
+        const pop = document.getElementById('reward-popup');
+        const img = document.getElementById('reward-img');
+        const msg = document.getElementById('feedback-msg');
+        if(isCorrect && sfxOn) document.getElementById('sfx-correct').play().catch(()=>{});
+        if(!isCorrect && sfxOn) document.getElementById('sfx-error').play().catch(()=>{});
+        
+        img.src = isCorrect ? (document.body.getAttribute('data-theme')==='dark'?imgGothic[0]:imgSakura[0]) : imgError;
+        msg.innerHTML = isCorrect ? "正解！ ✨" : `<span style="color:red">不正解！</span><br><small>答え: ${correctVal}</small>`;
+        pop.style.display = 'flex';
+        setTimeout(() => pop.style.display = 'none', isCorrect ? 1400 : 2400);
+    }
+
+    function switchLib(cat) { currentCategory = cat; renderLib(); }
+    function renderLib() {
+        const body = document.getElementById('lib-body');
+        const wrap = document.getElementById('lib-wrapper');
+        document.getElementById('lib-cat-v').classList.toggle('selected', currentCategory === 'V');
+        document.getElementById('lib-cat-g').classList.toggle('selected', currentCategory === 'G');
+        
+        if(currentCategory === 'V') {
+            wrap.classList.remove('grammar-mode');
+            let html = `<tr><th>Español</th><th>辞書</th><th>ます</th><th>て</th><th>た</th><th>ない</th><th>意向</th><th>受身</th><th>使役</th><th>可能</th></tr>`;
+            verbData.filter(v=>v.lv===currentLevel).forEach(v => {
+                html += `<tr><td><b>${v.m}</b></td><td>${v.k}</td><td>${getForm(v,'masu')}</td><td>${getForm(v,'te')}</td><td>${getForm(v,'ta')}</td><td>${getForm(v,'nai_stem')}ない</td><td>${getForm(v,'Volitivo')}</td><td>${getForm(v,'Pasiva')}</td><td>${getForm(v,'Causativa')}</td><td>${getForm(v,'Potencial')}</td></tr>`;
+            });
+            body.innerHTML = html;
+        } else {
+            wrap.classList.add('grammar-mode');
+            body.innerHTML = `<tr><th>文法</th><th>意味 / 公式</th></tr>` + grammarData.filter(g=>g.lv===currentLevel).map(g=>`<tr><td style="color:var(--accent); font-weight:900;">${g.tag}</td><td><b>${g.m}</b><br><small>${g.formula}</small></td></tr>`).join('');
+        }
+    }
+
+    function saveRecord(q, sec) {
+        const key = `record_${currentLevel}_${currentCategory}_${q}`;
+        const old = localStorage.getItem(key);
+        if(!old || sec < parseInt(old)) localStorage.setItem(key, sec);
+    }
+
+    function loadRecords() {
+        // En modo 'complete' el record es dinámico según el total de preguntas de la base
+        const currentQty = (session.mode === 'complete') ? "ALL" : session.qty;
+        const key = `record_${currentLevel}_${currentCategory}_${currentQty}`;
+        const r = localStorage.getItem(key);
+        document.getElementById('best-time').innerHTML = r ? `${currentLevel} (${currentQty}): <b>${r}s</b>` : "記録なし";
+    }
+
+    function toggleAmbience() {
+        ambienceOn = !ambienceOn;
+        const l = document.getElementById('bgm-light'), d = document.getElementById('bgm-dark');
+        if(!ambienceOn) { l.pause(); d.pause(); }
+        else { document.body.getAttribute('data-theme')==='dark' ? d.play() : l.play(); }
+        document.getElementById('status-music').innerText = ambienceOn ? "ON" : "OFF";
+    }
+    function toggleSfx() { sfxOn = !sfxOn; document.getElementById('status-sfx').innerText = sfxOn ? "ON" : "OFF"; }
+    function toggleTheme() {
+        const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', t);
+        if(ambienceOn) { 
+            document.getElementById('bgm-light').pause(); 
+            document.getElementById('bgm-dark').pause();
+            const d = document.getElementById('bgm-dark'), l = document.getElementById('bgm-light');
+            t === 'dark' ? d.play() : l.play();
+        }
+    }
+    function setLevel(lv, el) { currentLevel = lv; document.querySelectorAll('#level-selector .chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); loadRecords(); }
+    function setCategory(c) { currentCategory = c; document.getElementById('cat-v').classList.toggle('selected', c==='V'); document.getElementById('cat-g').classList.toggle('selected', c==='G'); loadRecords(); }
+    function setMode(m) { session.mode = m; document.getElementById('m-speed').classList.toggle('selected', m==='speed'); document.getElementById('m-complete').classList.toggle('selected', m==='complete'); document.getElementById('speed-options').style.display = m==='speed' ? 'block' : 'none'; loadRecords(); }
+    function setQty(q, el) { session.qty = q; el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); loadRecords(); }
+
+    window.onload = loadRecords;
+</script>
+</body>
+</html>
