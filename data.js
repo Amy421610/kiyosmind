@@ -267,23 +267,131 @@ const grammarData = [
   // N4
   // =========================
 
-  { f: "te", tag: "〜ています", m: "Estar haciendo", lv: "N4", formula: "V-te + います" },
-  { f: "nai_stem", tag: "〜なければなりません", m: "Tener que", lv: "N4", formula: "V-nai + ければなりません" },
-  { f: "te", tag: "〜てもいい", m: "Se permite", lv: "N4", formula: "V-te + もいい" },
-  { f: "te", tag: "〜てはいけません", m: "No se permite", lv: "N4", formula: "V-te + はいけません" },
+  { f: "nai_stem", tag: "〜なければなりません", m: "Tener que (Obligación)", lv: "N4", formula: "V-nai (sin i) + ければなりません" },
+  { f: "nai_stem", tag: "〜なくてもいいです", m: "No es necesario", lv: "N4", formula: "V-nai (sin i) + くてもいいです" },
+  { f: "te", tag: "〜てはいけません", m: "Prohibido / No se permite", lv: "N4", formula: "V-te + はいけません" },
+  { f: "te", tag: "〜てもいいです", m: "Se permite / Está bien si...", lv: "N4", formula: "V-te + もいいです" },
 
-  { f: "dic", tag: "〜つもりです", m: "Intención", lv: "N4", formula: "V-dic + つもりです" },
-  { f: "dic", tag: "〜予定です", m: "Planeado", lv: "N4", formula: "V-dic + 予定です" },
+  // Intención y Planes
+  { f: "dic", tag: "〜つもりです", m: "Tener la intención de", lv: "N4", formula: "V-dic / V-nai + つもりです" },
+  { f: "dic", tag: "〜予定です", m: "Estar planeado que", lv: "N4", formula: "V-dic / Sustantivo + の + 予定です" },
+  { f: "volitivo", tag: "〜（よ）うと思っています", m: "Estoy pensando en (intención)", lv: "N4", formula: "V-volitivo + と思っています" },
 
-  { f: "te", tag: "〜てみる", m: "Intentar", lv: "N4", formula: "V-te + みる" },
-  { f: "te", tag: "〜てしまう", m: "Completar / lamentar", lv: "N4", formula: "V-te + しまう" },
+  // Estados y Acciones Terminadas
+  { f: "te", tag: "〜ています", m: "Estar haciendo / Estado resultante", lv: "N4", formula: "V-te + います" },
+  { f: "te", tag: "〜てあります", m: "Estar hecho (con intención)", lv: "N4", formula: "V-te + あります" },
+  { f: "te", tag: "〜ておきます", m: "Hacer algo con antelación", lv: "N4", formula: "V-te + おきます" },
+  { f: "te", tag: "〜てしまいます", m: "Hacer algo por completo / Lamentablemente", lv: "N4", formula: "V-te + しまいます" },
 
-  { f: "masu", tag: "〜たい", m: "Querer", lv: "N4", formula: "V-masu + たい" },
+  // Experiencia e Intentos
+  { f: "ta", tag: "〜たことがあります", m: "Haber tenido la experiencia de", lv: "N4", formula: "V-ta + ことがあります" },
+  { f: "te", tag: "〜てみます", m: "Intentar hacer algo (ver qué pasa)", lv: "N4", formula: "V-te + みます" },
 
-  { f: "Volitivo", tag: "〜ましょう", m: "Vamos a", lv: "N4", formula: "V + ましょう" },
+  // Recomendaciones y Opiniones
+  { f: "ta", tag: "〜たほうがいいです", m: "Es mejor que... (recomendación)", lv: "N4", formula: "V-ta + ほうがいいです" },
+  { f: "nai", tag: "〜ないほうがいいです", m: "Es mejor que no...", lv: "N4", formula: "V-nai + ほうがいいです" },
+  { f: "plain", tag: "〜と思います", m: "Creo que...", lv: "N4", formula: "Forma Plana + と思います" },
+  { f: "plain", tag: "〜と言っていました", m: "Dijo que...", lv: "N4", formula: "Forma Plana + と言っていました" },
 
-  { f: "ta", tag: "〜たほうがいい", m: "Mejor hacer", lv: "N4", formula: "V-ta + ほうがいい" },
+  // Deseos
+  { f: "masu", tag: "〜たいです", m: "Querer hacer algo", lv: "N4", formula: "V-masu (sin masu) + たいです" },
+  { f: "dic", tag: "〜たがっています", m: "Alguien más quiere hacer algo", lv: "N4", formula: "V-masu + たがっています" },
+  { f: "sustantivo", tag: "〜がほしいです", m: "Querer algo (objeto)", lv: "N4", formula: "Sustantivo + がほしいです" },
 
-  { f: "dic", tag: "〜と思う", m: "Creo que", lv: "N4", formula: "Frase + と思う" },
+
+// Habilidad y Capacidad (Potencial)
+  { f: "potencial", tag: "〜（え）る", m: "Poder hacer algo", lv: "N4", formula: "V-potencial + ます" },
+  { f: "dic", tag: "〜ことができる", m: "Ser capaz de", lv: "N4", formula: "V-dic + ことが出来る" },
+
+  // Condicionales (Si...)
+  { f: "ta", tag: "〜たら", m: "Si / Cuando ocurre algo", lv: "N4", formula: "V-ta + ら" },
+  { f: "ba", tag: "〜ば", m: "Si... (condición necesaria)", lv: "N4", formula: "V-condicional (forma ba)" },
+  { f: "dic", tag: "〜と", m: "Si... (resultado natural/fijo)", lv: "N4", formula: "V-dic + と" },
+
+  // Dar y Recibir (Favor y Cortesía)
+  { f: "te", tag: "〜てあげる", m: "Hacer un favor a alguien", lv: "N4", formula: "V-te + あげる" },
+  { f: "te", tag: "〜てくれる", m: "Alguien me hace un favor", lv: "N4", formula: "V-te + くれる" },
+  { f: "te", tag: "〜てもらう", m: "Recibir un favor de alguien", lv: "N4", formula: "V-te + もらう" },
+  { f: "te", tag: "〜ていただけませんか", m: "¿Podría hacerme el favor de...?", lv: "N4", formula: "V-te + いただけませんか" },
+
+  // Probabilidad y Apariencia
+  { f: "plain", tag: "〜でしょう", m: "Probablemente / ¿Verdad?", lv: "N4", formula: "Forma Plana + でしょう" },
+  { f: "plain", tag: "〜かもしれません", m: "Quizás / Tal vez", lv: "N4", formula: "Forma Plana + かもしれません" },
+  { f: "masu", tag: "〜そうです", m: "Parece que... (apariencia)", lv: "N4", formula: "V-masu / Adj-i (sin i) + そうです" },
+  { f: "plain", tag: "〜そうです", m: "He oído que...", lv: "N4", formula: "Forma Plana + そうです" },
+  { f: "plain", tag: "〜はずです", m: "Se supone que / Debería ser", lv: "N4", formula: "Forma Plana + はずです" },
+
+  // Razones y Causas
+  { f: "plain", tag: "〜ので", m: "Porque / Debido a que (formal)", lv: "N4", formula: "Forma Plana + ので" },
+  { f: "plain", tag: "〜し、〜し", m: "Además de... y...", lv: "N4", formula: "Frase 1 + し + Frase 2 + し" },
+  { f: "te", tag: "〜て、〜", m: "Hacer esto y luego...", lv: "N4", formula: "V-te + Frase consecutiva" },
+
+  // Cambios de Estado
+  { f: "dic", tag: "〜ようになる", m: "Empezar a ser capaz de / Llegar a", lv: "N4", formula: "V-dic + ようになる" },
+  { f: "dic", tag: "〜ようにする", m: "Intentar / Asegurarse de", lv: "N4", formula: "V-dic + ようにする" },
+  { f: "adjetivo", tag: "〜くなる / 〜になる", m: "Volverse / Convertirse en", lv: "N4", formula: "Adj-i -> くなる / Adj-na -> になる" },
+
+
+// Voz Pasiva y Causativa (Dificultad Alta N4)
+  { f: "passive", tag: "〜られる", m: "Ser hecho por (Voz Pasiva)", lv: "N4", formula: "V-pasivo + ます" },
+  { f: "causative", tag: "〜させる", m: "Hacer / Dejar que alguien haga", lv: "N4", formula: "V-causativo + ます" },
+  { f: "causative_passive", tag: "〜させられる", m: "Ser obligado a hacer algo", lv: "N4", formula: "V-causativo pasivo" },
+
+  // Propósito y Finalidad
+  { f: "dic", tag: "〜ために", m: "Para / Con el fin de", lv: "N4", formula: "V-dic / Sustantivo + の + ために" },
+  { f: "dic", tag: "〜ように", m: "De modo que / Para que", lv: "N4", formula: "V-dic / V-nai + ように" },
+  { f: "masu", tag: "〜に行く / 来る", m: "Ir / Venir a hacer algo", lv: "N4", formula: "V-masu (sin masu) + に + 行く/来る" },
+
+  // Tiempo y Secuencia
+  { f: "plain", tag: "〜時", m: "Cuando...", lv: "N4", formula: "Forma Plana + 時（とき）" },
+  { f: "dic", tag: "〜まえに", m: "Antes de...", lv: "N4", formula: "V-dic + まえに" },
+  { f: "ta", tag: "〜たあとで", m: "Después de...", lv: "N4", formula: "V-ta + あとで" },
+  { f: "te", tag: "〜てから", m: "Desde que hice / Después de", lv: "N4", formula: "V-te + から" },
+  { f: "dic", tag: "〜うちに", m: "Mientras / Antes de que cambie el estado", lv: "N4", formula: "V-dic / V-nai / Adj / Sust + の + うちに" },
+
+  // Simultaneidad y Manera
+  { f: "masu", tag: "〜ながら", m: "Hacer algo mientras se hace otra cosa", lv: "N4", formula: "V-masu + ながら" },
+  { f: "masu", tag: "〜方", m: "Manera de hacer algo", lv: "N4", formula: "V-masu + 方（かた）" },
+  { f: "masu", tag: "〜すぎる", m: "Hacer algo en exceso", lv: "N4", formula: "V-masu / Adj + すぎる" },
+  { f: "masu", tag: "〜やすい", m: "Fácil de hacer", lv: "N4", formula: "V-masu + やすい" },
+  { f: "masu", tag: "〜にくい", m: "Difícil de hacer", lv: "N4", formula: "V-masu + にくい" },
+
+  // Comparaciones
+  { f: "sustantivo", tag: "〜より〜ほうが", m: "Más que... es mejor...", lv: "N4", formula: "A より B のほうが Adj" },
+  { f: "sustantivo", tag: "〜ほど〜ない", m: "No tan... como...", lv: "N4", formula: "A は B ほど Adj-nai" },
+
+  // Sustantivación y Otros
+  { f: "plain", tag: "〜の", m: "El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + の" },
+  { f: "plain", tag: "〜こと", m: "Cosa / El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + こと" }
+
+
+{ f: "plain", tag: "〜ようです", m: "Parece que... (conjetura propia)", lv: "N4", formula: "Forma Plana / [Sust + の] + ようです" },
+  { f: "plain", tag: "〜みたいです", m: "Parece... / Es como... (coloquial)", lv: "N4", formula: "Sustantivo / Forma Plana + みたいです" },
+  { f: "plain", tag: "〜らしいです", m: "Parece que / Típico de...", lv: "N4", formula: "Sustantivo / Forma Plana + らしいです" },
+
+  // Duda y Preguntas Indirectas
+  { f: "plain", tag: "〜かどうか", m: "Si... o no", lv: "N4", formula: "Forma Plana (sin da) + かどうか" },
+  { f: "plain", tag: "〜か", m: "Pregunta indirecta (quién, qué, etc.)", lv: "N4", formula: "Pronombre interrogativo + Forma Plana + か" },
+
+  // Partículas Compuestas e Intermedias
+  { f: "sustantivo", tag: "〜について", m: "Sobre / Acerca de", lv: "N4", formula: "Sustantivo + について" },
+  { f: "sustantivo", tag: "〜によって", m: "Por (agente en pasiva) / Debido a", lv: "N4", formula: "Sustantivo + によって" },
+  { f: "dic", tag: "〜のに", m: "A pesar de / Aunque...", lv: "N4", formula: "Forma Plana + のに" },
+  { f: "dic", tag: "〜のに", m: "Para... (uso o propósito de un objeto)", lv: "N4", formula: "V-dic + のに + [Uso/Gasto/Tiempo]" },
+
+  // Limitación y Énfasis
+  { f: "sustantivo", tag: "〜しか〜ない", m: "Solo / Nada más que... (negativo)", lv: "N4", formula: "Sustantivo + しか + V-nai" },
+  { f: "sustantivo", tag: "〜ばかり", m: "Solo / Nada más que...", lv: "N4", formula: "Sustantivo / V-te + ばかり" },
+  { f: "ta", tag: "〜たばかり", m: "Acabar de hacer algo", lv: "N4", formula: "V-ta + ばかり" },
+  { f: "dic", tag: "〜ところです", m: "Estar a punto de / Estar haciendo / Acabar de", lv: "N4", formula: "V-dic / V-te iru / V-ta + ところです" },
+
+  // Facilitadores de Comunicación
+  { f: "plain", tag: "〜んです / 〜のだ", m: "Es que... (explicación)", lv: "N4", formula: "Forma Plana + んです" },
+  { f: "sustantivo", tag: "〜など", m: "Etcétera / Cosas como...", lv: "N4", formula: "Sustantivo + など" },
+  { f: "plain", tag: "〜なら", m: "Si es el caso de... / Si se trata de...", lv: "N4", formula: "Sustantivo / Forma Plana + なら" },
+
+  // Adverbios y otros
+  { f: "plain", tag: "〜が決まる", m: "Se decide que...", lv: "N4", formula: "V-dic + ことに + なります / きまります" },
+  { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" },
 
 ];
