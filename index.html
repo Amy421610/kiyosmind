@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiyo's Mind ✨ Dual Soul</title>
     <link rel="icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Ser(if)+JP:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #fff5f7; --card: #ffffff; --text: #1a1a1a; --accent: #ff8fa3; --border: #e0aeb9; --btn-radius: 20px; }
         [data-theme="dark"] { --bg: #000000; --card: #121212; --text: #e0e0e0; --accent: #8b0000; --border: #440000; --btn-radius: 5px; }
@@ -91,6 +91,7 @@
         <div class="chip-group">
             <div class="chip selected" id="cat-v" onclick="setCategory('V')">動詞 (Verbos)</div>
             <div class="chip" id="cat-g" onclick="setCategory('G')">文法 (Gramática)</div>
+            <div class="chip" id="cat-s" onclick="setCategory('S')">⭐ 星問題</div>
         </div>
         <button class="btn-main" onclick="navTo('setup-screen')">スタート</button>
         <button class="btn-main" style="background:none; color:var(--accent); border-color: var(--accent);" onclick="navTo('lib-screen')">ライブラリ</button>
@@ -225,14 +226,23 @@
         const vFilter = getVerbsByLevel(currentLevel);
 	const gFilter = getGrammarByLevel(currentLevel);
         if(currentCategory === 'V') {
-            vFilter.forEach(v => { ['te','nai_stem','ta','masu','Volitivo','Pasiva','Potencial'].forEach(t => base.push({v, type:'V', t})); });
-        } else {
-           gFilter.forEach(g => {
-    vFilter.forEach(v => {
-        if(g.f) base.push({ v, g, type:'G' });
+    vFilter.forEach(v => { 
+        ['te','nai_stem','ta','masu','Volitivo','Pasiva','Potencial']
+        .forEach(t => base.push({v, type:'V', t})); 
     });
-});
-        }
+}
+else if(currentCategory === 'G') {
+    gFilter.forEach(g => {
+        vFilter.forEach(v => {
+            if(g.f) base.push({ v, g, type:'G' });
+        });
+    });
+}
+else if(currentCategory === 'S') {
+    base = starData
+        .filter(q => q.lv === currentLevel)
+        .map(q => ({ type:'S', q }));
+}
         
         session.limit = (session.mode === 'complete') ? base.length : Math.min(session.qty, base.length);
         session.correctCount = 0; 
@@ -255,10 +265,61 @@
         navTo('game-screen'); nextQ();
     }
 
+function renderStarQuestion(q) {
+    const area = document.getElementById('options-area');
+    area.innerHTML = "";
+
+    document.getElementById('q-kanji').innerHTML = "⭐";
+    document.getElementById('q-m').innerText = q.grammar;
+    document.getElementById('q-tag').innerText = "N4 文法";
+
+    const sentence = document.createElement('div');
+    sentence.className = "glass";
+    sentence.style.padding = "20px";
+    sentence.style.marginBottom = "20px";
+    sentence.style.textAlign = "center";
+    sentence.style.fontSize = "1.3rem";
+    sentence.innerText = q.sentence;
+
+    area.appendChild(sentence);
+
+    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = "option-btn glass";
+        b.innerText = opt;
+
+        b.onclick = () => {
+            session.totalAnswered++;
+
+            if(opt === q.answer) {
+                session.correctCount++;
+                showFeedback(true);
+            } else {
+                showFeedback(false, q.answer);
+            }
+
+            session.queue.shift();
+            setTimeout(nextQ, 1500);
+        };
+
+        area.appendChild(b);
+    });
+}
+
     function nextQ() {
         if(session.totalAnswered >= session.limit) { endSession(); return; }
         document.getElementById('counter-display').innerText = `${session.totalAnswered + 1} / ${session.limit}`;
         const item = session.queue[0];
+
+        if(item.type === 'S') {
+    renderStarQuestion(item.q);
+    return;
+}
+
+
+
 // ✅ VALIDACIÓN AQUÍ
 if (!item || !item.v) {
     console.error("Item inválido:", item);
@@ -399,6 +460,8 @@ function getVerbsByLevel(level) {
 function getGrammarByLevel(level) {
     return grammarData.filter(g => g.lv === level);
 }
+
+
 
 
 </script>
