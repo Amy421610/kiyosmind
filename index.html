@@ -226,7 +226,11 @@
         if(currentCategory === 'V') {
             vFilter.forEach(v => { ['te','nai_stem','ta','masu','Volitivo','Pasiva','Potencial'].forEach(t => base.push({v, type:'V', t})); });
         } else {
-            vFilter.forEach(v => gFilter.forEach(g => base.push({v, g, type:'G'})));
+           gFilter.forEach(g => {
+    vFilter.forEach(v => {
+        if(g.f) base.push({ v, g, type:'G' });
+    });
+});
         }
         
         session.limit = (session.mode === 'complete') ? base.length : Math.min(session.qty, base.length);
@@ -254,6 +258,13 @@
         if(session.totalAnswered >= session.limit) { endSession(); return; }
         document.getElementById('counter-display').innerText = `${session.totalAnswered + 1} / ${session.limit}`;
         const item = session.queue[0];
+// ✅ VALIDACIÓN AQUÍ
+if (!item || !item.v) {
+    console.error("Item inválido:", item);
+    session.queue.shift(); // lo quitamos para no trabar el loop
+    nextQ();
+    return;
+}
         const area = document.getElementById('options-area'); area.innerHTML = "";
         let correct = (item.type === 'V') ? getForm(item.v, item.t) : getForm(item.v, item.g.f);
 
@@ -261,8 +272,27 @@
         document.getElementById('q-m').innerText = item.type === 'V' ? item.v.m : `${item.v.k} + ${item.g.m}`;
         document.getElementById('q-tag').innerText = item.type === 'V' ? item.t : "正しい形";
 
-        const pool = [getForm(item.v, 'te'), getForm(item.v, 'nai_stem'), getForm(item.v, 'ta'), getForm(item.v, 'masu'), getForm(item.v, 'Volitivo'), getForm(item.v, 'Potencial')];
-        const finalOpts = [...new Set([correct, ...pool.sort(()=>.5-Math.random())])].slice(0,4).sort(()=>.5-Math.random());
+        const pool = [
+    getForm(item.v, 'te'),
+    getForm(item.v, 'nai_stem'),
+    getForm(item.v, 'ta'),
+    getForm(item.v, 'masu'),
+    getForm(item.v, 'Volitivo'),
+    getForm(item.v, 'Potencial')
+].filter(x => x); // 🔥 elimina undefined
+
+const options = [correct];
+
+// llenar opciones sin duplicados
+while(options.length < 4 && pool.length > 0) {
+    const r = pool.splice(Math.floor(Math.random()*pool.length), 1)[0];
+    if(r && !options.includes(r)) options.push(r);
+}
+
+// mezclar
+options.sort(() => Math.random() - 0.5);
+
+const finalOpts = options;
 
         finalOpts.forEach(o => {
             const b = document.createElement('button');
