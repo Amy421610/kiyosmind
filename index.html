@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiyo's Mind ✨ Dual Soul</title>
+    <link rel="icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #fff5f7; --card: #ffffff; --text: #1a1a1a; --accent: #ff8fa3; --border: #e0aeb9; --btn-radius: 20px; }
@@ -221,8 +222,8 @@
     session.timerInterval = null;
     session.isPaused = false;
     let base = [];
-        const vFilter = verbData.filter(v => v.lv === currentLevel);
-        const gFilter = grammarData.filter(g => g.lv === currentLevel);
+        const vFilter = getVerbsByLevel(currentLevel);
+	const gFilter = getGrammarByLevel(currentLevel);
         if(currentCategory === 'V') {
             vFilter.forEach(v => { ['te','nai_stem','ta','masu','Volitivo','Pasiva','Potencial'].forEach(t => base.push({v, type:'V', t})); });
         } else {
@@ -342,13 +343,13 @@ const finalOpts = options;
         if(currentCategory === 'V') {
             wrap.classList.remove('grammar-mode');
             let html = `<tr><th>Español</th><th>辞書</th><th>ます</th><th>て</th><th>た</th><th>ない</th><th>意向</th><th>受身</th><th>使役</th><th>可能</th></tr>`;
-            verbData.filter(v=>v.lv===currentLevel).forEach(v => {
+            getVerbsByLevel(currentLevel).forEach(v => {
                 html += `<tr><td><b>${v.m}</b></td><td>${v.k}</td><td>${getForm(v,'masu')}</td><td>${getForm(v,'te')}</td><td>${getForm(v,'ta')}</td><td>${getForm(v,'nai_stem')}ない</td><td>${getForm(v,'Volitivo')}</td><td>${getForm(v,'Pasiva')}</td><td>${getForm(v,'Causativa')}</td><td>${getForm(v,'Potencial')}</td></tr>`;
             });
             body.innerHTML = html;
         } else {
             wrap.classList.add('grammar-mode');
-            body.innerHTML = `<tr><th>文法</th><th>意味 / 公式</th></tr>` + grammarData.filter(g=>g.lv===currentLevel).map(g=>`<tr><td style="color:var(--accent); font-weight:900;">${g.tag}</td><td><b>${g.m}</b><br><small>${g.formula}</small></td></tr>`).join('');
+            body.innerHTML = `<tr><th>文法</th><th>意味 / 公式</th></tr>` + getGrammarByLevel(currentLevel).map(g=>`<tr><td style="color:var(--accent); font-weight:900;">${g.tag}</td><td><b>${g.m}</b><br><small>${g.formula}</small></td></tr>`).join('');
         }
     }
 
@@ -390,6 +391,15 @@ const finalOpts = options;
     function setQty(q, el) { session.qty = q; el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); loadRecords(); }
 
     window.onload = loadRecords;
+
+function getVerbsByLevel(level) {
+    return vgetVerbsByLevel(currentLevel);
+}
+
+function getGrammarByLevel(level) {
+    return getGrammarByLevel(currentLevel);
+}
+
 </script>
 </body>
 </html>
