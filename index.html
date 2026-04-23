@@ -393,11 +393,11 @@ const finalOpts = options;
     window.onload = loadRecords;
 
 function getVerbsByLevel(level) {
-    return getVerbsByLevel(currentLevel);
+  return verbData.filter(v => v.lv === level);
 }
 
 function getGrammarByLevel(level) {
-    return getGrammarByLevel(currentLevel);
+  return grammarData.filter(g => g.lv === level);
 }
 
 </script>
