@@ -365,7 +365,7 @@ const grammarData = [
   { f: "plain", tag: "〜こと", m: "Cosa / El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + こと" },
 
 
-{ f: "plain", tag: "〜ようです", m: "Parece que... (conjetura propia)", lv: "N4", formula: "Forma Plana / [Sust + の] + ようです" },
+  { f: "plain", tag: "〜ようです", m: "Parece que... (conjetura propia)", lv: "N4", formula: "Forma Plana / [Sust + の] + ようです" },
   { f: "plain", tag: "〜みたいです", m: "Parece... / Es como... (coloquial)", lv: "N4", formula: "Sustantivo / Forma Plana + みたいです" },
   { f: "plain", tag: "〜らしいです", m: "Parece que / Típico de...", lv: "N4", formula: "Sustantivo / Forma Plana + らしいです" },
 
@@ -392,6 +392,6 @@ const grammarData = [
 
   // Adverbios y otros
   { f: "plain", tag: "〜が決まる", m: "Se decide que...", lv: "N4", formula: "V-dic + ことに + なります / きまります" },
-  { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" },
+  { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" }
 
 ];
