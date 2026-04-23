@@ -55,10 +55,6 @@ const verbData = [
   { k: "決まる", f: "きまる", m: "Decidirse", g: 1, lv: "N4" },
   { k: "決める", f: "きめる", m: "Decidir", g: 2, lv: "N4" },
 
-Aquí tienes la Parte 2 de la lista para tu aplicación. En esta sección incluimos muchos verbos que terminan en ~su (causativos o transitivos), verbos de comunicación y de estado físico.
-
-JavaScript
-const jlptN4Verbs_Part2 = [
   { k: "切る", f: "きる", m: "Cortar", g: 1, lv: "N4" },
   { k: "着る", f: "きる", m: "Vestirse (torso)", g: 2, lv: "N4" },
   { k: "比べる", f: "くらべる", m: "Comparar", g: 2, lv: "N4" },
