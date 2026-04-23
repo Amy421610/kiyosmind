@@ -392,7 +392,7 @@ const grammarData = [
 
   // Adverbios y otros
   { f: "plain", tag: "〜が決まる", m: "Se decide que...", lv: "N4", formula: "V-dic + ことに + なります / きまります" },
-  { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" }
+  { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" },
 
   // Lenguaje Honorífico (Sonkeigo - Elevando al otro)
   { f: "honorific", tag: "お〜になります", m: "Hacer algo (Honorífico)", lv: "N4", formula: "お + V-masu (stem) + になります" },
