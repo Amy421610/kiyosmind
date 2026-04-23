@@ -362,7 +362,7 @@ const grammarData = [
 
   // Sustantivación y Otros
   { f: "plain", tag: "〜の", m: "El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + の" },
-  { f: "plain", tag: "〜こと", m: "Cosa / El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + こと" }
+  { f: "plain", tag: "〜こと", m: "Cosa / El hecho de (Sustantivador)", lv: "N4", formula: "Forma Plana + こと" },
 
 
 { f: "plain", tag: "〜ようです", m: "Parece que... (conjetura propia)", lv: "N4", formula: "Forma Plana / [Sust + の] + ようです" },
