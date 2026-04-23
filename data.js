@@ -394,4 +394,34 @@ const grammarData = [
   { f: "plain", tag: "〜が決まる", m: "Se decide que...", lv: "N4", formula: "V-dic + ことに + なります / きまります" },
   { f: "plain", tag: "〜にする", m: "Decidir hacer...", lv: "N4", formula: "V-dic + ことに + します" }
 
+  // Lenguaje Honorífico (Sonkeigo - Elevando al otro)
+  { f: "honorific", tag: "お〜になります", m: "Hacer algo (Honorífico)", lv: "N4", formula: "お + V-masu (stem) + になります" },
+  { f: "honorific", tag: "〜られます", m: "Hacer algo (Honorífico simple)", lv: "N4", formula: "V-pasivo utilizado como honorífico" },
+  { f: "honorific", tag: "ください", m: "Por favor haga (Honorífico)", lv: "N4", formula: "お + V-masu (stem) + ください" },
+
+  // Lenguaje Humilde (Kenjougo - Bajándose uno mismo)
+  { f: "humble", tag: "お〜します", m: "Hacer algo (Humilde)", lv: "N4", formula: "お + V-masu (stem) + します" },
+  { f: "humble", tag: "〜ていただく", m: "Recibir la acción de un superior", lv: "N4", formula: "V-te + いただく" },
+
+  // Expresiones de "Dar y Recibir" de Respeto
+  { f: "te", tag: "〜てくださる", m: "Alguien superior me hace un favor", lv: "N4", formula: "V-te + くださる" },
+  { f: "te", tag: "〜て差し上げる", m: "Hacer un favor a un superior", lv: "N4", formula: "V-te + 差し上げる" },
+
+  // Estructuras del Minna no Nihongo (Cap. 26-50)
+  { f: "masu", tag: "〜すぎる", m: "Demasiado / En exceso", lv: "N4", formula: "V-masu / Adj + すぎる" },
+  { f: "masu", tag: "〜だす", m: "Empezar a (repentinamente)", lv: "N4", formula: "V-masu + だす" },
+  { f: "masu", tag: "〜おわる", m: "Terminar de hacer", lv: "N4", formula: "V-masu + おわる" },
+  { f: "plain", tag: "〜し", m: "No solo... sino también (enlistar razones)", lv: "N4", formula: "Forma Plana + し" },
+  { f: "plain", tag: "〜はずだ", m: "Debería ser que / Se espera que", lv: "N4", formula: "Forma Plana + はずだ" },
+  { f: "plain", tag: "〜はずがない", m: "Es imposible que...", lv: "N4", formula: "Forma Plana + はずがない" },
+  { f: "te", tag: "〜てくる", m: "Acción que viene hacia el presente / Comienza a", lv: "N4", formula: "V-te + くる" },
+  { f: "te", tag: "〜ていく", m: "Acción que se aleja hacia el futuro / Continúa", lv: "N4", formula: "V-te + いく" },
+  { f: "plain", tag: "〜おそれがある", m: "Existe el riesgo de que...", lv: "N4", formula: "V-dic / Sust + の + おそれがある" },
+
+  // Adverbios que cambian la gramática
+  { f: "adv", tag: "なかなか〜ない", m: "No lograr hacer algo (pese al esfuerzo)", lv: "N4", formula: "なかなか + V-nai" },
+  { f: "adv", tag: "ぜったいに〜ない", m: "Absolutamente no / Jamás", lv: "N4", formula: "ぜったいに + V-nai" },
+  { f: "adv", tag: "けっして〜ない", m: "Nunca / De ninguna manera", lv: "N4", formula: "けっして + V-nai" },
+  { f: "adv", tag: "たぶん〜だろう", m: "Probablemente...", lv: "N4", formula: "たぶん + Forma Plana + だろう" }
+
 ];
