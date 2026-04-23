@@ -147,6 +147,9 @@
     </div>
 </div>
 
+<script src="data.js"></script>
+<script>
+
 <script>
     const imgSakura = ["https://i.postimg.cc/tTrpL78H/Deku.jpg", "https://i.postimg.cc/63HtDTFJ/Jaemin.jpg", "https://i.postimg.cc/MHvqxqJN/Jungwon.jpg", "https://i.postimg.cc/QCHhshrZ/Miles-Morales.jpg", "https://i.postimg.cc/Y0hMkMwM/Tanjiro.jpg"];
     const imgGothic = ["https://i.postimg.cc/C1vSWdXW/Ayanokoji.jpg", "https://i.postimg.cc/76Bwpbjw/Deku-dark.jpg", "https://i.postimg.cc/zBd89345/Jinwoo.jpg", "https://i.postimg.cc/gjnmdmPF/Kaneki.jpg"];
@@ -155,23 +158,8 @@
     let session = { mode: 'complete', qty: 20, queue: [], timerInterval: null, correctCount: 0, totalAnswered: 0, limit: 0, isPaused: false, seconds: 0 };
     let currentCategory = 'V', currentLevel = 'N4', sfxOn = true, ambienceOn = false;
 
-    const verbData = [
-        {k:"飲む", f:"のむ", m:"Beber", g:1, lv:"N4"}, {k:"話す", f:"はなす", m:"Hablar", g:1, lv:"N4"},
-        {k:"食べる", f:"たべる", m:"Comer", g:2, lv:"N4"}, {k:"見る", f:"みる", m:"Ver", g:2, lv:"N4"},
-        {k:"行く", f:"いく", m:"Ir", g:1, lv:"N4"}, {k:"書く", f:"かく", m:"Escribir", g:1, lv:"N4"},
-        {k:"寝る", f:"ねる", m:"Dormir", g:2, lv:"N4"}, {k:"待つ", f:"まつ", m:"Esperar", g:1, lv:"N4"},
-        {k:"買う", f:"かう", m:"Comprar", g:1, lv:"N4"}, {k:"来る", f:"くる", m:"Venir", g:3, lv:"N4"},
-        {k:"する", f:"する", m:"Hacer", g:3, lv:"N4"}
-    ];
 
-    const grammarData = [
-        {f:"nai_stem", tag:"〜なければなりません", m:"Tengo que", lv:"N4", formula:"V-nai + ければなりません"},
-        {f:"te", tag:"〜ています", m:"Estar haciendo", lv:"N4", formula:"V-te + います"},
-        {f:"dic", tag:"〜ことができます", m:"Poder hacer", lv:"N4", formula:"V-dic + ことができます"},
-        {f:"ta", tag:"〜ことがあります", m:"Haber hecho", lv:"N4", formula:"V-ta + ことがあります"},
-        {f:"te", tag:"〜ください", m:"Por favor", lv:"N4", formula:"V-te + ください"}
-    ];
-
+   
     function getForm(v, type) {
         const s = v.f.slice(0,-1); const l = v.f.slice(-1);
         const mapNai = {る:"ら",む:"ま",ぶ:"ば",ぬ:"な",つ:"た",す:"さ",ぐ:"が",く:"か",う:"わ"};
@@ -256,7 +244,7 @@
                     document.getElementById('timer-display').innerText = session.seconds + "s"; 
                 }
             }, 1000);
-        } else {F
+        } else {
             document.getElementById('timer-display').style.display = 'none';
         }
         navTo('game-screen'); nextQ();
