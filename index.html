@@ -447,7 +447,15 @@ const finalOpts = options;
         }
     }
     function setLevel(lv, el) { currentLevel = lv; document.querySelectorAll('#level-selector .chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); loadRecords(); }
-    function setCategory(c) { currentCategory = c; document.getElementById('cat-v').classList.toggle('selected', c==='V'); document.getElementById('cat-g').classList.toggle('selected', c==='G'); loadRecords(); }
+    function setCategory(c) { 
+    currentCategory = c; 
+
+    document.getElementById('cat-v').classList.toggle('selected', c === 'V'); 
+    document.getElementById('cat-g').classList.toggle('selected', c === 'G'); 
+    document.getElementById('cat-s').classList.toggle('selected', c === 'S'); 
+
+    loadRecords(); 
+}
     function setMode(m) { session.mode = m; document.getElementById('m-speed').classList.toggle('selected', m==='speed'); document.getElementById('m-complete').classList.toggle('selected', m==='complete'); document.getElementById('speed-options').style.display = m==='speed' ? 'block' : 'none'; loadRecords(); }
     function setQty(q, el) { session.qty = q; el.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); loadRecords(); }
 
