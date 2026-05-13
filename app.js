@@ -241,29 +241,102 @@ function renderDuelSelect(){
 //  CONJUGACIÓN
 // ══════════════════════════════════════════════
 function getForm(v, type) {
-  const s=v.f.slice(0,-1), l=v.f.slice(-1);
-  const mNai ={る:'ら',む:'ま',ぶ:'ば',ぬ:'な',つ:'た',す:'さ',ぐ:'が',く:'か',う:'わ'};
-  const mTe  ={る:'って',む:'んで',ぶ:'んで',ぬ:'んで',つ:'って',す:'して',ぐ:'いで',く:'いて',う:'って'};
-  const mPot ={る:'れ',む:'め',ぶ:'べ',ぬ:'ね',つ:'て',す:'せ',ぐ:'げ',く:'け',う:'え'};
-  const mPas ={る:'ら',む:'ま',ぶ:'ば',ぬ:'な',つ:'た',す:'さ',ぐ:'が',く:'か',う:'わ'};
-  const mVol ={る:'よう',む:'もう',ぶ:'ぼう',ぬ:'のう',つ:'とう',す:'そう',ぐ:'ごう',く:'こう',う:'おう'};
-  const mMasu={る:'り',む:'み',ぶ:'び',ぬ:'に',つ:'ち',す:'し',ぐ:'ぎ',く:'き',う:'い'};
-  if(v.g===3){
-    const b=v.f.replace(/する$/,'');
-    if(v.f==='くる'){ return {nai_stem:'こ',te:'きて',ta:'きた',masu:'き',Volitivo:'こよう',Potencial:'こられ',Pasiva:'こられ',dic:'くる'}[type]||'くる'; }
-    return {nai_stem:b+'し',te:b+'して',ta:b+'した',masu:b+'し',Volitivo:b+'しよう',Potencial:b+'でき',Pasiva:b+'され',dic:v.f}[type]||v.f;
+  const s = v.f.slice(0, -1);
+  const l = v.f.slice(-1);
+
+  const mNai  = {る:'ら',む:'ま',ぶ:'ば',ぬ:'な',つ:'た',す:'さ',ぐ:'が',く:'か',う:'わ'};
+  const mTe   = {る:'って',む:'んで',ぶ:'んで',ぬ:'んで',つ:'って',す:'して',ぐ:'いで',く:'いて',う:'って'};
+  const mPot  = {る:'れ',む:'め',ぶ:'べ',ぬ:'ね',つ:'て',す:'せ',ぐ:'げ',く:'け',う:'え'};
+  const mPas  = {る:'ら',む:'ま',ぶ:'ば',ぬ:'な',つ:'た',す:'さ',ぐ:'が',く:'か',う:'わ'};
+  const mVol  = {る:'よう',む:'もう',ぶ:'ぼう',ぬ:'のう',つ:'とう',す:'そう',ぐ:'ごう',く:'こう',う:'おう'};
+  const mMasu = {る:'り',む:'み',ぶ:'び',ぬ:'に',つ:'ち',す:'し',ぐ:'ぎ',く:'き',う:'い'};
+  const mImp  = {る:'れ',む:'め',ぶ:'べ',ぬ:'ね',つ:'て',す:'せ',ぐ:'げ',く:'け',う:'え'};
+
+  // ── Grupo 3: くる ────────────────────────────
+  if (v.g === 3 && v.f === 'くる') {
+    return {
+      dic:        'くる',
+      masu:       'き',
+      te:         'きて',
+      ta:         'きた',
+      nai_stem:   'こ',
+      Volitivo:   'こよう',
+      Potencial:  'こられ',
+      Pasiva:     'こられ',
+      Causativa:  'こさせ',
+      CausPas:    'こさせられ',
+      Imperativa: 'こい',
+      Prohibitiva:'くるな',
+    }[type] ?? 'くる';
   }
-  if(v.g===2){ return {nai_stem:s,te:s+'て',ta:s+'た',masu:s,Volitivo:s+'よう',Potencial:s+'られ',Pasiva:s+'られ',dic:v.f}[type]||v.f; }
-  if(type==='dic')      return v.f;
-  if(type==='nai_stem') return s+mNai[l];
-  if(type==='masu')     return s+mMasu[l];
-  if(type==='te'){ if(v.f==='いく')return'いって'; return s+mTe[l]; }
-  if(type==='ta'){ if(v.f==='いく')return'いった'; const te=s+mTe[l]; return te.replace('んで','んだ').replace('いで','いだ').replace('いて','いた').replace('って','った').replace('して','した').replace('て','た'); }
-  if(type==='Potencial') return s+mPot[l]+'る';
-  if(type==='Pasiva')    return s+mPas[l]+'れ';
-  if(type==='Volitivo')  return s+mVol[l];
+
+  // ── Grupo 3: する / ～する ────────────────────
+  if (v.g === 3) {
+    const b = v.f.replace(/する$/, '');
+    return {
+      dic:        v.f,
+      masu:       b + 'し',
+      te:         b + 'して',
+      ta:         b + 'した',
+      nai_stem:   b + 'し',
+      Volitivo:   b + 'しよう',
+      Potencial:  b + 'でき',
+      Pasiva:     b + 'され',
+      Causativa:  b + 'させ',
+      CausPas:    b + 'させられ',
+      Imperativa: b + 'しろ',
+      Prohibitiva: v.f + 'な',
+    }[type] ?? v.f;
+  }
+
+  // ── Grupo 2: 一段 (ichidan) ───────────────────
+  if (v.g === 2) {
+    return {
+      dic:        v.f,
+      masu:       s,
+      te:         s + 'て',
+      ta:         s + 'た',
+      nai_stem:   s,
+      Volitivo:   s + 'よう',
+      Potencial:  s + 'られ',
+      Pasiva:     s + 'られ',
+      Causativa:  s + 'させ',
+      CausPas:    s + 'させられ',
+      Imperativa: s + 'ろ',
+      Prohibitiva: v.f + 'な',
+    }[type] ?? v.f;
+  }
+
+  // ── Grupo 1: 五段 (godan) ────────────────────
+  if (type === 'dic')       return v.f;
+  if (type === 'nai_stem')  return s + mNai[l];
+  if (type === 'masu')      return s + mMasu[l];
+  if (type === 'Volitivo')  return s + mVol[l];
+  if (type === 'Potencial') return s + mPot[l] + 'る';
+  if (type === 'Pasiva')    return s + mPas[l] + 'れ';
+  if (type === 'Causativa') return s + mPas[l] + 'せ';
+  if (type === 'CausPas')   return s + mPas[l] + 'せられ';
+  if (type === 'Imperativa') return s + mImp[l];
+  if (type === 'Prohibitiva') return v.f + 'な';
+  if (type === 'te') {
+    if (v.f === 'いく') return 'いって';
+    return s + mTe[l];
+  }
+  if (type === 'ta') {
+    if (v.f === 'いく') return 'いった';
+    const te = s + mTe[l];
+    return te
+      .replace('んで', 'んだ')
+      .replace('いで', 'いだ')
+      .replace('いて', 'いた')
+      .replace('って', 'った')
+      .replace('して', 'した')
+      .replace('て',   'た');
+  }
+
   return v.f;
 }
+
 
 // Opciones tramposas: mezcla grupos y formas similares
 function buildTrickyOpts(correct, v, formType) {
@@ -602,14 +675,23 @@ function renderLib(){
   const verbs=verbData.filter(v=>v.lv===cfg.level);
   if(libCat==='V'){
     tbl.style.minWidth='900px';
-    let h=`<tr><th>Español</th><th>辞書</th><th>Gr.</th><th>ます</th><th>て</th><th>た</th><th>ない</th><th>意向</th><th>受身</th><th>可能</th></tr>`;
+    let h=`<tr><th>Español</th><th>Diccionario</th><th>Gr.</th><th>Masu</th><th>Te</th><th>Ta</th><th>Nai</th><th>Volitiva</th><th>Pasiva</th><th>Potencial</th><th>Causativa</th><th>Caus-Pas</th><th>Imperativa</th><th>Prohibitiva</th></tr>`;
     verbs.forEach(v=>{h+=`<tr>
-      <td><b>${v.m}</b></td><td>${v.k}（${v.f}）</td>
-      <td style="color:var(--accent);font-weight:700;">${v.g}</td>
-      <td>${getForm(v,'masu')}ます</td><td>${getForm(v,'te')}</td><td>${getForm(v,'ta')}</td>
-      <td>${getForm(v,'nai_stem')}ない</td><td>${getForm(v,'Volitivo')}</td>
-      <td>${getForm(v,'Pasiva')}れる</td><td>${getForm(v,'Potencial')}る</td>
-    </tr>`;});
+  <td><b>${v.m}</b></td>
+  <td>${v.k}（${v.f}）</td>
+  <td style="color:var(--accent);font-weight:700;">${v.g}</td>
+  <td>${getForm(v,'masu')}ます</td>
+  <td>${getForm(v,'te')}</td>
+  <td>${getForm(v,'ta')}</td>
+  <td>${getForm(v,'nai_stem')}ない</td>
+  <td>${getForm(v,'Volitivo')}</td>
+  <td>${getForm(v,'Pasiva')}れる</td>
+  <td>${getForm(v,'Potencial')}る</td>
+  <td>${getForm(v,'Causativa')}る</td>
+  <td>${getForm(v,'CausPas')}れる</td>
+  <td>${getForm(v,'Imperativa')}</td>
+  <td>${getForm(v,'Prohibitiva')}</td>
+</tr>`;});
     tbl.innerHTML=h;
   } else {
     tbl.style.minWidth='100%';
