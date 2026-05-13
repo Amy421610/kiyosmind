@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups"/>
 <title>Kiyo's Mind ✨</title>
 <link rel="icon" href="favicon.ico"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet"/>
@@ -23,7 +24,7 @@
   --shadow-md:0 4px 32px rgba(191,95,255,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .35s,color .35s;overflow-x:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .35s,color .35s;overflow-x:hidden;-webkit-text-size-adjust:100%;}
 .wrap{max-width:460px;margin:auto;padding:16px 16px 60px;}
 .screen{display:none;animation:up .3s ease;}
 .screen.active{display:block;}
@@ -31,7 +32,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);}
 .card-flat{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:16px;}
 
-/* TOPBAR */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:10px 18px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);}
 .logo{font-size:.6rem;font-weight:900;letter-spacing:3px;cursor:pointer;color:var(--accent);}
 .ctrl-row{display:flex;gap:10px;align-items:center;}
@@ -39,53 +39,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .cb span{font-size:.95rem;}
 .cb small{font-size:.45rem;font-weight:700;color:var(--sub);letter-spacing:.5px;}
 
-/* CHIPS */
 .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px;}
-.chip{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:var(--card);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--sub);transition:all .18s;white-space:nowrap;}
+.chip{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:var(--card);font-size:.78rem;font-weight:600;cursor:pointer;color:var(--sub);transition:all .18s;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
 .chip:hover{border-color:var(--accent);color:var(--accent);}
 .chip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
 
-/* BUTTONS */
-.btn{width:100%;padding:15px;border-radius:var(--r);border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.93rem;cursor:pointer;transition:opacity .18s,transform .1s;letter-spacing:.3px;margin-top:10px;display:block;}
+.btn{width:100%;padding:15px;border-radius:var(--r);border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.93rem;cursor:pointer;transition:opacity .18s,transform .1s;letter-spacing:.3px;margin-top:10px;display:block;-webkit-tap-highlight-color:transparent;}
 .btn:active{transform:scale(.98);}
 .btn-p{background:var(--text);color:var(--bg);}
 .btn-o{background:transparent;color:var(--accent);border:2px solid var(--accent);}
 .btn-g{background:transparent;color:var(--sub);border:1.5px solid var(--border);}
 .btn:hover{opacity:.84;}
 
-/* LABEL — blanco/claro en dark */
 .lbl{display:block;font-size:.6rem;font-weight:700;letter-spacing:1.8px;color:var(--text);opacity:.5;text-transform:uppercase;margin-bottom:8px;margin-top:20px;}
-[data-theme="dark"] .lbl{color:#fff;opacity:.7;}
+[data-theme="dark"] .lbl{color:#fff;opacity:.75;}
 
-/* PROFILE */
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;}
-.p-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:22px 14px;text-align:center;cursor:pointer;transition:all .22s;}
+.p-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:22px 14px;text-align:center;cursor:pointer;transition:all .22s;-webkit-tap-highlight-color:transparent;}
 .p-card:hover,.p-card.sel{border-color:var(--accent);box-shadow:0 0 0 4px rgba(232,115,154,.1);}
 [data-theme="dark"] .p-card:hover,[data-theme="dark"] .p-card.sel{box-shadow:0 0 0 4px rgba(191,95,255,.15);}
 .p-av{font-size:2.8rem;margin-bottom:10px;}
 .p-name{font-weight:700;font-size:.95rem;}
 .p-streak{font-size:.7rem;color:var(--streak);font-weight:600;margin-top:5px;}
 .p-acc{font-size:.65rem;color:var(--sub);margin-top:3px;}
-.p-del{font-size:.6rem;color:var(--err);margin-top:10px;cursor:pointer;font-weight:700;}
+.p-del{font-size:.62rem;color:var(--err);margin-top:10px;cursor:pointer;font-weight:700;-webkit-tap-highlight-color:transparent;}
 .p-del:hover{opacity:.7;}
 
-/* HOME STATS */
 .s-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;}
 .s-box{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:14px 8px;text-align:center;}
 .s-val{font-size:1.5rem;font-weight:900;color:var(--accent);}
 .s-val.fire{color:var(--streak);}
 .s-lbl{font-size:.58rem;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.8px;color:var(--text);opacity:.5;}
-[data-theme="dark"] .s-lbl{color:#fff;opacity:.6;}
+[data-theme="dark"] .s-lbl{color:#fff;opacity:.65;}
 
-/* CALENDAR */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0 4px;}
 .cal-d{aspect-ratio:1;border-radius:6px;background:var(--border);opacity:.35;}
 .cal-d.done{background:var(--streak);opacity:1;}
 .cal-d.today{outline:2px solid var(--accent);outline-offset:2px;opacity:1;}
 
-/* MODE CARDS */
 .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 18px;}
-.mode-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center;}
+.mode-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center;-webkit-tap-highlight-color:transparent;}
 .mode-card:hover,.mode-card.on{border-color:var(--accent);}
 .mode-card.on{background:rgba(232,115,154,.06);}
 [data-theme="dark"] .mode-card.on{background:rgba(191,95,255,.08);}
@@ -93,7 +86,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .mode-name{font-weight:700;font-size:.82rem;}
 .mode-desc{font-size:.65rem;color:var(--sub);margin-top:3px;}
 
-/* GAME */
 .prog-bar{height:3px;background:var(--border);border-radius:3px;margin-bottom:16px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .4s;}
 .q-card{text-align:center;padding:32px 20px 22px;position:relative;margin-bottom:16px;}
@@ -107,26 +99,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .q-hint{display:inline-block;margin-top:8px;padding:5px 14px;border-radius:50px;background:rgba(232,115,154,.1);color:var(--accent);font-size:.66rem;font-weight:600;cursor:pointer;border:1px dashed var(--accent);}
 [data-theme="dark"] .q-hint{background:rgba(191,95,255,.12);}
 .lives-row{display:flex;gap:6px;justify-content:center;margin-bottom:14px;font-size:1.3rem;}
-.opt-btn{width:100%;padding:15px 18px;background:var(--card);border:2px solid var(--border);border-radius:var(--r-sm);margin-bottom:10px;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.95rem;transition:all .16s;text-align:left;}
+.opt-btn{width:100%;padding:15px 18px;background:var(--card);border:2px solid var(--border);border-radius:var(--r-sm);margin-bottom:10px;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.95rem;transition:all .16s;text-align:left;-webkit-tap-highlight-color:transparent;}
 .opt-btn:hover{border-color:var(--accent);color:var(--accent);}
 .opt-btn.ok{border-color:var(--ok);background:rgba(91,191,149,.09);color:var(--ok);}
 .opt-btn.bad{border-color:var(--err);background:rgba(224,92,114,.09);color:var(--err);}
 .opt-btn:disabled{cursor:default;}
 
 /* STAR */
-.star-sentence{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:22px 18px;text-align:center;font-size:1rem;font-weight:500;line-height:2.6;font-family:'Noto Serif JP',serif;margin-bottom:6px;}
-.star-blank{display:inline-block;min-width:48px;border-bottom:2.5px solid var(--sub);margin:0 3px;color:var(--sub);font-size:.75rem;vertical-align:bottom;text-align:center;}
-.star-blank.is-star{border-color:var(--accent);color:var(--accent);font-weight:900;font-size:.9rem;}
+.star-context{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;font-size:.82rem;font-family:'Noto Serif JP',serif;line-height:1.8;margin-bottom:10px;color:var(--sub);}
+.star-sentence{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:20px 16px;text-align:center;font-size:.95rem;font-weight:500;line-height:2.6;font-family:'Noto Serif JP',serif;margin-bottom:8px;}
+.star-blank{display:inline-block;min-width:44px;border-bottom:2.5px solid var(--sub);margin:0 3px;color:var(--sub);font-size:.72rem;vertical-align:bottom;text-align:center;padding-bottom:2px;}
+.star-blank.is-star{border-color:var(--accent);color:var(--accent);font-weight:900;font-size:.85rem;}
 .star-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
-.star-opt{background:var(--card);border:2px solid var(--border);border-radius:var(--r-sm);padding:12px 10px;cursor:pointer;transition:all .16s;text-align:center;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;}
+.star-opt{background:var(--card);border:2px solid var(--border);border-radius:var(--r-sm);padding:12px 10px;cursor:pointer;transition:all .16s;text-align:center;font-family:'Noto Serif JP',sans-serif;font-weight:600;font-size:.88rem;-webkit-tap-highlight-color:transparent;}
 .star-opt:hover{border-color:var(--accent);}
-.star-opt .num{font-size:.6rem;font-weight:700;color:var(--sub);margin-bottom:3px;}
+.star-opt .num{font-size:.6rem;font-weight:700;color:var(--sub);margin-bottom:3px;font-family:'DM Sans',sans-serif;}
 .star-opt.ok{border-color:var(--ok);background:rgba(91,191,149,.09);color:var(--ok);}
 .star-opt.bad{border-color:var(--err);background:rgba(224,92,114,.09);color:var(--err);}
-.hint-reveal{font-size:.68rem;color:var(--sub);text-align:center;margin-top:8px;padding:8px;background:var(--bg);border-radius:var(--r-xs);display:none;}
+.hint-reveal{font-size:.7rem;color:var(--sub);text-align:center;margin-top:10px;padding:10px 14px;background:var(--bg);border-radius:var(--r-xs);display:none;line-height:1.6;}
 .hint-reveal.show{display:block;}
 
-/* RESULT */
 .res-ring{width:120px;height:120px;border-radius:50%;border:5px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.7rem;font-weight:900;}
 .res-ring.great{border-color:var(--ok);}
 .res-ring.ok{border-color:var(--streak);}
@@ -136,21 +128,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .res-missed-item strong{color:var(--err);}
 .res-missed-item span{color:var(--ok);}
 
-/* LIBRARY */
 .tbl-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1.5px solid var(--border);margin-top:14px;max-height:52vh;}
 table{width:100%;border-collapse:collapse;}
 th{background:var(--accent);color:#fff;padding:10px 12px;font-size:.62rem;position:sticky;top:0;z-index:5;font-weight:700;letter-spacing:.5px;font-family:'DM Sans',sans-serif;}
 td{padding:9px 12px;border-bottom:1px solid var(--border);background:var(--card);font-size:.73rem;text-align:center;}
 
-/* LEADERBOARD */
-.lb-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;}
 .lb-champ{text-align:center;padding:20px;background:linear-gradient(135deg,rgba(232,115,154,.1),rgba(191,95,255,.1));border-radius:var(--r-sm);margin-bottom:16px;border:1.5px solid var(--border);}
 .lb-champ-crown{font-size:2rem;}
 .lb-champ-name{font-size:1.1rem;font-weight:900;margin-top:6px;}
 .lb-champ-sub{font-size:.7rem;color:var(--sub);margin-top:4px;}
 .lb-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
 .lb-row:last-child{border-bottom:none;}
-.lb-rank{font-size:1.1rem;font-weight:900;width:28px;text-align:center;color:var(--sub);}
+.lb-rank{font-size:1.1rem;font-weight:900;width:28px;text-align:center;}
 .lb-av{font-size:1.5rem;}
 .lb-info{flex:1;}
 .lb-name{font-weight:700;font-size:.9rem;}
@@ -163,7 +152,6 @@ td{padding:9px 12px;border-bottom:1px solid var(--border);background:var(--card)
 .bar-p1{background:linear-gradient(90deg,var(--accent),var(--accent2));}
 .bar-p2{background:linear-gradient(90deg,var(--streak),#e05c72);}
 
-/* DUEL */
 .duel-scores{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .duel-box{background:var(--card);border:2px solid var(--border);border-radius:var(--r-sm);padding:14px;text-align:center;transition:border-color .2s;}
 .duel-box.active{border-color:var(--accent);}
@@ -171,17 +159,14 @@ td{padding:9px 12px;border-bottom:1px solid var(--border);background:var(--card)
 .duel-name{font-size:.72rem;font-weight:700;margin-top:4px;}
 .duel-pts{font-size:1.4rem;font-weight:900;color:var(--accent);margin-top:2px;}
 
-/* TOAST */
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:13px 26px;font-weight:700;font-size:.85rem;z-index:8000;opacity:0;transition:all .22s;pointer-events:none;text-align:center;min-width:180px;box-shadow:var(--shadow-md);white-space:pre-line;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.t-ok{border-color:var(--ok);color:var(--ok);}
 #toast.t-err{border-color:var(--err);color:var(--err);}
 
-/* PAUSE */
 #pause-screen{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9000;display:none;justify-content:center;align-items:center;}
 #pause-screen.show{display:flex;}
 
-/* LOADING */
 #loading-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -189,7 +174,6 @@ td{padding:9px 12px;border-bottom:1px solid var(--border);background:var(--card)
 hr{border:none;border-top:1.5px solid var(--border);margin:18px 0;}
 .tc{text-align:center;}
 .sub{color:var(--sub);}
-.accent{color:var(--accent);}
 input{font-family:'DM Sans',sans-serif;}
 </style>
 </head>
@@ -201,7 +185,7 @@ input{font-family:'DM Sans',sans-serif;}
 <audio id="sfx-err"  src="https://files.catbox.moe/mk59ob.mp3" preload="auto"></audio>
 
 <div id="loading-screen">
-  <div style="font-size:1.5rem;color:var(--accent);font-weight:900;">KIYO'S MIND</div>
+  <div style="font-size:1.5rem;color:var(--accent);font-weight:900;letter-spacing:3px;">KIYO'S MIND</div>
   <div class="spinner"></div>
   <div style="font-size:.75rem;color:var(--sub);">接続中...</div>
 </div>
@@ -227,7 +211,7 @@ input{font-family:'DM Sans',sans-serif;}
     <button class="cb" onclick="toggleTheme()"><span>🌓</span><small>テーマ</small></button>
   </div>
 
-  <!-- PROFILE SCREEN -->
+  <!-- PROFILE -->
   <div id="profile-screen" class="screen active">
     <div class="tc" style="padding:30px 0 8px;">
       <div style="font-size:2rem;font-weight:900;">こんにちは 👋</div>
@@ -255,7 +239,7 @@ input{font-family:'DM Sans',sans-serif;}
     </div>
   </div>
 
-  <!-- HOME SCREEN -->
+  <!-- HOME -->
   <div id="home-screen" class="screen">
     <div class="tc" style="padding:24px 0 12px;">
       <div id="home-av" style="font-size:3rem;"></div>
@@ -289,12 +273,12 @@ input{font-family:'DM Sans',sans-serif;}
     <button class="btn btn-g" onclick="navTo('profile-screen')">← 切替</button>
   </div>
 
-  <!-- SETUP SCREEN -->
+  <!-- SETUP -->
   <div id="setup-screen" class="screen">
     <div style="font-size:1.3rem;font-weight:900;margin-bottom:4px;">設定</div>
     <div class="sub" style="font-size:.8rem;margin-bottom:6px;">モードを選んでください</div>
     <span class="lbl">モード</span>
-    <div class="mode-grid" id="mode-grid">
+    <div class="mode-grid">
       <div class="mode-card on" id="md-time"   onclick="setMode('time')"><div class="mode-icon">⏱</div><div class="mode-name">タイムアタック</div><div class="mode-desc">時間内に最大数</div></div>
       <div class="mode-card"   id="md-lives"  onclick="setMode('lives')"><div class="mode-icon">❤️</div><div class="mode-name">ライフ制</div><div class="mode-desc">3ミスまで</div></div>
       <div class="mode-card"   id="md-zen"    onclick="setMode('zen')"><div class="mode-icon">🧘</div><div class="mode-name">禅モード</div><div class="mode-desc">制限なし・自分のペース</div></div>
@@ -311,7 +295,7 @@ input{font-family:'DM Sans',sans-serif;}
     </div>
     <div id="duel-opts" style="display:none;">
       <span class="lbl">対戦相手</span>
-      <div id="duel-player-select" style="margin-bottom:8px;"></div>
+      <div id="duel-player-select"></div>
       <span class="lbl">制限時間</span>
       <div class="chip-row" id="duel-min-chips">
         <span class="chip on" onclick="setDuelMinutes(1,this)">1分</span>
@@ -327,7 +311,7 @@ input{font-family:'DM Sans',sans-serif;}
     <button class="btn btn-g" onclick="navTo('home-screen')">← 戻る</button>
   </div>
 
-  <!-- GAME SCREEN -->
+  <!-- GAME -->
   <div id="game-screen" class="screen">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div id="duel-scores-wrap" style="display:none;" class="duel-scores">
@@ -335,7 +319,7 @@ input{font-family:'DM Sans',sans-serif;}
       <div class="duel-box" id="d-box-1"></div>
     </div>
     <div class="lives-row" id="lives-row" style="display:none;"></div>
-    <div class="card q-card" id="q-card">
+    <div class="card q-card">
       <span class="q-timer"   id="q-timer"   style="display:none;">0:00</span>
       <span class="q-counter" id="q-counter"></span>
       <button class="q-close" onclick="togglePause(true)">✕</button>
@@ -347,7 +331,7 @@ input{font-family:'DM Sans',sans-serif;}
     <div id="opts-area"></div>
   </div>
 
-  <!-- RESULT SCREEN -->
+  <!-- RESULT -->
   <div id="result-screen" class="screen">
     <div class="card tc" style="padding:38px 20px;">
       <div class="res-ring" id="res-ring"></div>
@@ -366,23 +350,23 @@ input{font-family:'DM Sans',sans-serif;}
     </div>
   </div>
 
-  <!-- LEADERBOARD SCREEN -->
+  <!-- LEADERBOARD -->
   <div id="lb-screen" class="screen">
     <div style="font-size:1.3rem;font-weight:900;margin-bottom:4px;">🏆 ランキング</div>
     <div class="sub" style="font-size:.78rem;margin-bottom:18px;">今月の競争</div>
     <div id="lb-champ-wrap" class="lb-champ" style="display:none;">
       <div class="lb-champ-crown">👑</div>
       <div class="lb-champ-name" id="lb-champ-name"></div>
-      <div class="lb-champ-sub" id="lb-champ-sub"></div>
+      <div class="lb-champ-sub"  id="lb-champ-sub"></div>
     </div>
-    <span class="lbl">正解率</span>
+    <span class="lbl">今月の正解数</span>
     <div class="bar-wrap" id="lb-bars"></div>
     <span class="lbl">プロフィール比較</span>
     <div id="lb-rows"></div>
     <button class="btn btn-g" onclick="navTo('home-screen')" style="margin-top:16px;">← 戻る</button>
   </div>
 
-  <!-- LIBRARY SCREEN -->
+  <!-- LIBRARY -->
   <div id="lib-screen" class="screen">
     <div style="font-size:1.3rem;font-weight:900;margin-bottom:4px;">ライブラリ 📚</div>
     <div class="sub" style="font-size:.78rem;margin-bottom:14px;">学習内容を確認</div>
@@ -395,9 +379,9 @@ input{font-family:'DM Sans',sans-serif;}
   </div>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<!-- Firebase v9 compat — más compatible con Safari/iOS -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
