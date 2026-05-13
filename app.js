@@ -39,20 +39,7 @@ function loadCache() {
 
 // ── Firebase ──────────────────────────────────
 async function loadAllProfiles() {
-  // 1. Carga instantánea desde caché local
   allProfiles = loadCache();
-
-  // 2. Sincroniza con Firebase en segundo plano (sin bloquear)
-  db.collection(COL).get({ source: 'server' })
-    .then(snap => {
-      allProfiles = snap.docs.map(d => d.data());
-      saveCache(allProfiles);
-      // Si ya estamos en la pantalla de perfiles, refresca silenciosamente
-      if(document.getElementById('profile-screen').classList.contains('active')) {
-        renderProfileScreen();
-      }
-    })
-    .catch(e => console.warn('Firebase sync:', e));
 }
 
 async function saveProfile(p) {
@@ -660,9 +647,20 @@ const formLabel  = t=>({te:'〜て形',ta:'〜た形',nai_stem:'〜ない(語幹
 const groupLabel = g=>g===1?'グループ1(五段)':g===2?'グループ2(一段)':'グループ3(不規則)';
 
 // ── Init ──────────────────────────────────────
-window.onload = async () => {
-  // Muestra la app instantáneamente con datos del caché
-  await loadAllProfiles();
-  document.getElementById('loading-screen').style.display='none';
+window.onload = () => {
+  // Carga caché local INMEDIATAMENTE, sin esperar Firebase
+  allProfiles = loadCache();
+  document.getElementById('loading-screen').style.display = 'none';
   renderProfileScreen();
+
+  // Firebase sincroniza en segundo plano, sin bloquear nada
+  db.collection(COL).get({ source: 'server' })
+    .then(snap => {
+      allProfiles = snap.docs.map(d => d.data());
+      saveCache(allProfiles);
+      if(document.getElementById('profile-screen').classList.contains('active')) {
+        renderProfileScreen();
+      }
+    })
+    .catch(e => console.warn('Firebase sync en segundo plano:', e));
 };
